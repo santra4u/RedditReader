@@ -1,0 +1,31 @@
+﻿@page
+@model Models.DynamicTable
+@{
+    ViewData["Title"] = "Reddit List reader";
+}
+
+<div class="text-center">
+    <h1 class="display-4">  </h1>
+    <table>
+        <tr>
+@*
+            @foreach (var entry in Model.properties[0])
+            {
+                <td>@entry.Key</td>
+            }
+        </tr>
+        @{
+            foreach (var item in Model.properties)
+            {
+                <tr>
+                    @foreach (var keypair in item)
+                    {
+                        <td>@keypair.Value</td>
+                    }
+                </tr>
+            }
+        }
+
+            *@
+    </table>
+</div>

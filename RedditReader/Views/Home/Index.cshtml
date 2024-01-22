@@ -1,0 +1,29 @@
+﻿@model Models.DynamicTable
+
+
+<div class="text-center">
+    <h1 class="display-4"> @Model.name  </h1>
+    <table>
+        
+            
+            @foreach (var entry in Model.properties[0])
+            {
+            <tr>
+                <td>@Html.Raw(@entry.Key)</td>
+                <td>@Html.Raw(@entry.Value)</td>
+            </tr>
+            }
+
+            @foreach (var entry in Model.properties[1])
+            {
+                <tr>
+                    <td>@Html.Raw(@entry.Key)</td>
+                    <td>@Html.Raw(@entry.Value)</td>
+                </tr>
+            }
+            
+            
+
+           
+    </table>
+</div>
