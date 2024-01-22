@@ -1,7 +1,16 @@
 ﻿@model Models.DynamicTable
 
+@section Scripts {
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+          setTimeout(function(){
+   window.location.reload(1);
+}, 5000);
 
-<div class="text-center">
+        </script>
+}
+
+<div class="text-center" id=#textToUpdate">
     <h1 class="display-4"> @Model.name  </h1>
     <table>
         

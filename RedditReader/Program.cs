@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Hosting;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog();
 // Add services to the container.
 builder.Services.AddRazorPages();
 
@@ -19,6 +23,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .WriteTo.File("c:/logs/myapp.txt", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
 
 app.MapRazorPages();
 

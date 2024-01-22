@@ -17,7 +17,7 @@ namespace RedditReader
 
 
             RedditData reddit = new RedditData();
-            var data = reddit.GetRedditData().Result;
+            var data = reddit.GetRedditData(10).Result;
             
             return View(data);
         }

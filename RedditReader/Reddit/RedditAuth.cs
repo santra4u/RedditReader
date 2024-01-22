@@ -6,6 +6,7 @@
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using Newtonsoft.Json;
+    using Serilog;
 
     public class RedditAuth
     {
@@ -20,29 +21,41 @@
             _clientSecret = clientSecret;
             _username = username;
             _password = password;
+
+            
         }
 
         public async Task<string> GetAccessToken()
         {
-            using var client = new HttpClient();
-            var credentials = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{_clientId}:{_clientSecret}"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
-            client.DefaultRequestHeaders.Add("User-Agent", "MockClient/0.1 by Me");
 
-            var postData = new List<KeyValuePair<string, string>>
-        {
-            new KeyValuePair<string, string>("grant_type", "password"),
-            new KeyValuePair<string, string>("username", _username),
-            new KeyValuePair<string, string>("password", _password)
-        };
+            try
+            {
+                
+                using var client = new HttpClient();
+                var credentials = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{_clientId}:{_clientSecret}"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+                client.DefaultRequestHeaders.Add("User-Agent", "MockClient/0.1 by Me");
 
-            var content = new FormUrlEncodedContent(postData);
-            var response = await client.PostAsync("https://www.reddit.com/api/v1/access_token", content);
-            response.EnsureSuccessStatusCode();
-            var responseString = await response.Content.ReadAsStringAsync();
-            var responseData = JsonConvert.DeserializeObject<dynamic>(responseString);
+                var postData = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("grant_type", "password"),
+                new KeyValuePair<string, string>("username", _username),
+                new KeyValuePair<string, string>("password", _password)
+            };
 
-            return responseData.access_token;
+                var content = new FormUrlEncodedContent(postData);
+                var response = await client.PostAsync("https://www.reddit.com/api/v1/access_token", content);
+                response.EnsureSuccessStatusCode();
+                var responseString = await response.Content.ReadAsStringAsync();
+                var responseData = JsonConvert.DeserializeObject<dynamic>(responseString);
+
+                return responseData.access_token;
+            } 
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed Authentication");
+                throw ex;
+            }
         }
     }
 

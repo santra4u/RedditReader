@@ -4,6 +4,26 @@
     ViewData["Title"] = "Reddit List reader";
 }
 
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#updateTextButton").click(function(){
+                $.ajax({
+                    url: '@Url.Action("Index", "Home")',
+                    type: 'GET',
+                    success: function(data){
+                        $("#textToUpdate").text(data.text);
+                    },
+                    error: function(){
+                        alert("Error updating text.");
+                    }
+                });
+            });
+        });
+    </script>
+}
+
 <div class="text-center">
     <h1 class="display-4">  </h1>
     <table>

@@ -4,18 +4,21 @@
     {
 
 
-    public async Task<string> GetRedditInfo() {
+    public async Task<string> GetRedditInfo(int limit) {
 
 
-            var appId = "JsbgvAr4_NqKRhO9NOFeBQ";
-            var appSecret = "OrF0-6Y829iGXSeEqv5MNpzadyGlxg";
-           
+            var MyConfig = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-            var auth = new RedditAuth(appId, appSecret, "somnathtest", "Testing1");
+            var appId = MyConfig.GetValue<string>("AppSettings:appId");
+            var appSecret = MyConfig.GetValue<string>("AppSettings:appSecret");
+            var username = MyConfig.GetValue<string>("AppSettings:username");
+            var password = MyConfig.GetValue<string>("AppSettings:password");
+
+            var auth = new RedditAuth(appId, appSecret, username, password);
             var accessToken = await auth.GetAccessToken();
 
             var apiClient = new RedditApiClient(accessToken);
-            var topPosts = await apiClient.GetTopPostsFromSubreddit("movies");
+            var topPosts = await apiClient.GetTopPostsFromSubreddit("movies", limit);
 
             return topPosts;
 
